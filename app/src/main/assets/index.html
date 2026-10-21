@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10131a">
+<title>C Mobile — Editor C</title>
+<style>
+:root{color-scheme:dark;--bg:#282a36;--panel:#21222c;--panel2:#44475a;--line:#44475a;--text:#f8f8f2;--muted:#bdc0d0;--green:#50fa7b;--blue:#8be9fd;--red:#ff5555;--purple:#bd93f9;--pink:#ff79c6;--orange:#ffb86c;--yellow:#f1fa8c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:18px 16px 14px;background:#21222c;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#bd93f9,#ff79c6);color:#282a36;display:grid;place-items:center;font-weight:900;font-size:20px}
+h1{font-size:19px;margin:0} .sub{font-size:12px;color:var(--muted);margin-top:2px}
+main{padding:14px;max-width:850px;margin:auto}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+button{border:1px solid var(--line);border-radius:10px;padding:10px 13px;background:var(--panel2);color:var(--text);font-weight:650;font-size:13px;cursor:pointer}
+button.primary{background:var(--green);color:#282a36;border-color:transparent;flex:1;min-width:120px}button:active{transform:scale(.98)}
+.meta{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px;margin:10px 2px}
+.editorbox{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#282a36}
+.filebar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--panel);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+textarea{display:block;width:100%;min-height:90px;resize:vertical;background:#282a36;color:#f8f8f2;border:0;outline:none;padding:16px;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4;white-space:pre;overflow:auto}
+.codeeditor{display:block;width:100%;min-height:360px;max-height:65vh;overflow:auto;resize:vertical;background:#282a36;color:#f8f8f2;border:0;outline:none;padding:16px;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4;white-space:pre;overflow-wrap:normal}
+.codeeditor .kw{color:#ff79c6}.codeeditor .type{color:#8be9fd}.codeeditor .str{color:#f1fa8c}.codeeditor .num{color:#bd93f9}.codeeditor .comment{color:#6272a4}.codeeditor .fn{color:#50fa7b}.codeeditor .pre{color:#ffb86c}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 9px;font-weight:700}.pill{font-size:11px;padding:4px 8px;border-radius:999px;background:#44475a;color:#8be9fd}
+.output{background:#21222c;border:1px solid var(--line);border-radius:12px;min-height:110px;padding:14px;font:13px/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:#f8f8f2}
+.output .hint{color:var(--muted);font-family:system-ui,sans-serif}.status{font-size:12px;color:var(--muted);margin-top:8px}
+footer{padding:18px 4px 30px;color:var(--muted);font-size:12px;line-height:1.55}
+a{color:var(--blue)}.notice{padding:11px 12px;background:#343746;border:1px solid #50fa7b;border-radius:10px;color:#f8f8f2;font-size:12px;line-height:1.5;margin:12px 0}
+@media(min-width:650px){textarea{min-height:450px}.toolbar button{font-size:14px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">C</div><div><h1>C Mobile</h1><div class="sub">Seu pequeno laboratório de programação</div></div></div></header>
+<main>
+  <div class="notice">Escreva seu programa em C e toque em <b>Executar</b>. A compilação usa um serviço online, então precisa de internet. Não coloque senhas nem dados pessoais no código.</div>
+  <div class="toolbar">
+    <button class="primary" id="run">▶ Executar código</button>
+    <button id="example">Exemplo</button>
+    <button id="save">Salvar neste navegador</button>
+    <button id="clear">Limpar</button>
+  </div>
+  <div class="meta"><span>LINGUAGEM: C (GCC)</span><span id="chars">0 caracteres</span></div>
+  <div class="editorbox">
+    <div class="filebar"><span class="dot"></span><span>main.c</span><span style="margin-left:auto">Editor</span></div>
+    <div id="code" class="codeeditor" contenteditable="true" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Editor de código C" role="textbox" aria-multiline="true">#include <stdio.h>
+
+int main(void) {
+    int i;
+    float nota, soma = 0, media;
+
+    for (i = 1; i <= 3; i++) {
+        printf("Digite a nota %d: ", i);
+        if (scanf("%f", &nota) != 1) {
+            printf("Entrada invalida.\n");
+            return 1;
+        }
+        soma += nota;
+    }
+
+    media = soma / 3.0f;
+    printf("\nSua media e: %.1f\n", media);
+
+    if (media >= 6.0f)
+        printf("Aprovado!\n");
+    else
+        printf("Reprovado.\n");
+
+    return 0;
+}</div>
+  </div>
+  <div class="sectionhead"><span>Terminal / resultado</span><span class="pill" id="state">PRONTO</span></div>
+  <div class="output" id="output"><span class="hint">A saída do programa aparecerá aqui. Se o código usar scanf, você poderá informar os dados antes de executar.</span></div>
+  <div id="inputWrap" style="display:none;margin-top:10px">
+    <label for="stdin" style="display:block;font-size:13px;margin-bottom:6px;color:var(--muted)">Entrada do programa (um valor por linha, se necessário)</label>
+    <textarea id="stdin" style="min-height:90px;border:1px solid var(--line);border-radius:10px" placeholder="Exemplo para o programa das notas:&#10;7.5&#10;8&#10;9"></textarea>
+    <button id="runInput" class="primary" style="width:100%;margin-top:8px">Executar com esta entrada</button>
+  </div>
+  <div class="status" id="status">Pronto para programar.</div>
+  <footer>Versão inicial do C Mobile. O código salvo fica no armazenamento deste navegador. A execução depende de um serviço de compilação externo e pode ficar indisponível ocasionalmente.</footer>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const editor = $('code');
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(code){
+ let t=escapeHtml(code);
+ t=t.replace(/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)/g,'<span class="comment">$1</span>');
+ t=t.replace(/(&lt;\s*stdio\.h\s*&gt;|#include)/g,'<span class="pre">$1</span>');
+ t=t.replace(/(&quot;.*?&quot;|".*?")/g,'<span class="str">$1</span>');
+ t=t.replace(/\b(printf|scanf|getchar|putchar|main)\b/g,'<span class="fn">$1</span>');
+ t=t.replace(/\b(int|char|float|double|void|long|short|unsigned|return)\b/g,'<span class="type">$1</span>');
+ t=t.replace(/\b(for|while|do|if|else|switch|case|break|continue)\b/g,'<span class="kw">$1</span>');
+ t=t.replace(/\b(\d+(?:\.\d+)?f?)\b/g,'<span class="num">$1</span>');
+ return t;
+}
+function getCode(){return editor.innerText.replace(/\u00a0/g,' ');}
+function setCode(code){editor.textContent=code; renderHighlight();}
+function renderHighlight(){
+ const code=getCode(); const pos=saveCaret(editor);
+ editor.innerHTML=highlight(code).replace(/\n/g,'<br>');
+ restoreCaret(editor,pos);
+}
+function saveCaret(el){
+ const sel=window.getSelection(); if(!sel||!sel.rangeCount||!el.contains(sel.anchorNode))return null;
+ const r=sel.getRangeAt(0).cloneRange();r.selectNodeContents(el);r.setEnd(sel.anchorNode,sel.anchorOffset);
+ return r.toString().length;
+}
+function restoreCaret(el,pos){
+ if(pos===null)return;
+ const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n,remaining=pos;
+ while(n=walker.nextNode()){if(remaining<=n.textContent.length){const r=document.createRange();r.setStart(n,remaining);r.collapse(true);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);return;}remaining-=n.textContent.length;}
+}
+const starter = getCode();
+editor.addEventListener('input',()=>{renderHighlight();updateCount();});
+editor.addEventListener('keydown',e=>{if(e.key==='Tab'){e.preventDefault();document.execCommand('insertText',false,'    ');}});
+function updateCount(){ $('chars').textContent = getCode().length + ' caracteres'; }
+renderHighlight(); updateCount();
+$('example').addEventListener('click',()=>{setCode(starter);updateCount();$('status').textContent='Exemplo restaurado.';});
+$('clear').addEventListener('click',()=>{setCode('');updateCount();$('output').textContent='';$('status').textContent='Editor limpo.';});
+$('save').addEventListener('click',()=>{try{localStorage.setItem('cmobile_code',getCode());$('status').textContent='Código salvo neste navegador.';}catch(e){$('status').textContent='Não foi possível salvar neste navegador.';}});
+try{const saved=localStorage.getItem('cmobile_code');if(saved!==null)setCode(saved);updateCount();}catch(e){}
+$('run').addEventListener('click',()=>runCode(false));
+$('runInput').addEventListener('click',()=>runCode(true));
+async function runCode(useInput){
+ const code=getCode();
+ if(!code.trim()){$('output').textContent='Escreva algum código antes de executar.';return;}
+ $('state').textContent='EXECUTANDO';$('output').textContent='Compilando e executando…';$('status').textContent='Conectando ao compilador online…';
+ if(/\bscanf\s*\(/.test(code) && !useInput){$('inputWrap').style.display='block';$('output').textContent='Este programa lê dados com scanf. Digite os valores na caixa de entrada abaixo e toque em “Executar com esta entrada”.';$('state').textContent='AGUARDANDO ENTRADA';$('status').textContent='A entrada é enviada ao compilador junto com o código.';return;}
+ try{
+  const response=await fetch('https://emkc.org/api/v2/piston/execute',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:'c',version:'*',files:[{name:'main.c',content:code}],stdin:useInput?$('stdin').value:''})});
+  if(!response.ok)throw new Error('O serviço respondeu com HTTP '+response.status);
+  const data=await response.json();
+  const compile=data.compile||{}, run=data.run||{};
+  let result='';
+  if(compile.output)result+='[COMPILAÇÃO]\n'+compile.output+'\n';
+  if(run.stdout)result+='[SAÍDA]\n'+run.stdout;
+  if(run.stderr)result+='\n[ERROS / AVISOS]\n'+run.stderr;
+  if(!result)result='Programa finalizado sem imprimir saída.';
+  if(run.code!==0 && run.code!==undefined)result+='\n\nCódigo de saída: '+run.code;
+  $('output').textContent=result;
+  $('state').textContent=(compile.code && compile.code!==0)?'ERRO':'CONCLUÍDO';
+  $('status').textContent=(compile.code && compile.code!==0)?'Verifique os erros de compilação.':'Execução finalizada.';
+ }catch(err){
+  $('output').textContent='Não consegui acessar o compilador online.\n\nConfira sua conexão com a internet e tente novamente. Se continuar falhando, o serviço pode estar temporariamente indisponível.\n\nDetalhe: '+err.message;
+  $('state').textContent='INDISPONÍVEL';$('status').textContent='A execução requer acesso ao serviço externo.';
+ }
+}
+</script>
+</body>
+    </html>
